@@ -49,6 +49,7 @@ export const ArticleParamsForm = ({
 		[styles.container_open]: isOpen,
 	});
 
+	
 	function handleFontChanges(value: OptionType) {
 		setComponentState({ ...componentState, fontFamilyOption: value });
 	}
@@ -113,8 +114,8 @@ export const ArticleParamsForm = ({
 						onChange={handleWidthChanges}
 					/>
 					<div className={styles.bottomContainer}>
-						<Button title='Сбросить' type='reset' />
-						<Button title='Применить' type='submit' />
+						<Button title='Сбросить' type='reset' onClick={() => handleReset} />
+						<Button title='Применить' type='submit' onClick={() => handleSubmit}/>
 					</div>
 				</form>
 			</aside>
