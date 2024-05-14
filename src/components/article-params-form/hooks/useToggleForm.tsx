@@ -3,33 +3,25 @@ import { useEffect } from 'react';
 type UseToggleForm = {
 	isOpen: boolean;
 	setIsOpen: (newValue: boolean) => void;
-	ref: React.RefObject<HTMLDivElement>;
+	wrapperRef: React.RefObject<HTMLDivElement>;
 };
 
 export const useToggleForm = ({
 	isOpen,
 	setIsOpen,
-    ref,
+	wrapperRef,
 }: UseToggleForm) => {
-	function handleClick() {
-		setIsOpen(!isOpen);
-	}
-
 	useEffect(() => {
 		const handleOutsideClick = (event: MouseEvent) => {
 			const { target } = event;
-			if (target instanceof Node && !ref.current?.contains(target)) {
+			if (target instanceof Node && !wrapperRef.current?.contains(target)) {
 				setIsOpen(false);
 			}
 		};
-
-		window.addEventListener('mousedown', handleOutsideClick);
+		if (isOpen) window.addEventListener('mousedown', handleOutsideClick);
 
 		return () => {
 			window.removeEventListener('mousedown', handleOutsideClick);
 		};
-	}, [isOpen, setIsOpen, ref]);
-
-	return handleClick;
-
+	}, [isOpen, setIsOpen, wrapperRef]);
 };

@@ -13,21 +13,15 @@ type ArrowButtonProps = {
 };
 
 export const ArrowButton = ({ onClick, isMenuOpen }: ArrowButtonProps) => {
-	const [isOpen, setIsOpen] = useState(isMenuOpen);
-
 	const arrowClassName = clsx({
 		[styles.arrow]: true,
-		[styles.arrow_open]: isOpen,
+		[styles.arrow_open]: isMenuOpen,
 	});
 
 	const containerClassName = clsx({
 		[styles.container]: true,
-		[styles.container_open]: isOpen,
+		[styles.container_open]: isMenuOpen,
 	});
-
-	useEffect(() => {
-		setIsOpen(isMenuOpen);
-	}, [isMenuOpen]);
 
 	return (
 		/* Не забываем указаывать role и aria-label атрибуты для интерактивных элементов */

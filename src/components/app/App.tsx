@@ -1,5 +1,4 @@
 import { CSSProperties, useState } from 'react';
-import clsx from 'clsx';
 
 import { Article } from 'components/article/Article';
 import { ArticleParamsForm } from 'components/article-params-form/ArticleParamsForm';
@@ -12,7 +11,7 @@ export const App = () => {
 	const [articleStyles, setArticleStyles] = useState(defaultArticleState);
 	return (
 		<div
-			className={clsx(styles.main)}
+			className={styles.main}
 			style={
 				{
 					'--font-family': defaultArticleState.fontFamilyOption.value,
@@ -22,7 +21,10 @@ export const App = () => {
 					'--bg-color': defaultArticleState.backgroundColor.value,
 				} as CSSProperties
 			}>
-			<ArticleParamsForm params={articleStyles} setParams={setArticleStyles} />
+			<ArticleParamsForm
+				articleStyles={articleStyles}
+				setArticleStyles={setArticleStyles}
+			/>
 			<Article />
 		</div>
 	);

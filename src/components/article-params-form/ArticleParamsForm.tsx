@@ -21,26 +21,27 @@ import {
 import clsx from 'clsx';
 
 type ArticleParamsFormProps = {
-	params: ArticleStateType;
-	setParams: (params: ArticleStateType) => void;
+	articleStyles: ArticleStateType;
+	setArticleStyles: (params: ArticleStateType) => void;
 };
 
 export const ArticleParamsForm = ({
-	params,
-	setParams,
+	articleStyles,
+	setArticleStyles,
 }: ArticleParamsFormProps) => {
 	const [isOpen, setIsOpen] = useState(false);
-	const [state, setState] = useState(params);
-	const ref = useRef<HTMLDivElement | null>(null);
-	const handleClick = useToggleForm({ isOpen, setIsOpen, ref });
+	const [componentState, setComponentState] = useState(articleStyles);
+	const wrapperRef = useRef<HTMLDivElement | null>(null);
+	const handleClick = useToggleForm({ isOpen, setIsOpen, wrapperRef });
+	const onClick = () => setIsOpen(!isOpen);
 
 	const handleReset = () => {
-		setState(defaultArticleState);
-		setParams(defaultArticleState);
+		setComponentState(defaultArticleState);
+		setArticleStyles(defaultArticleState);
 	};
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		setParams(state);
+		setArticleStyles(componentState);
 	};
 
 	const containerClassName = clsx({
@@ -49,28 +50,28 @@ export const ArticleParamsForm = ({
 	});
 
 	function handleFontChanges(value: OptionType) {
-		setState({ ...state, fontFamilyOption: value });
+		setComponentState({ ...componentState, fontFamilyOption: value });
 	}
 
 	function handleSizeChanges(value: OptionType) {
-		setState({ ...state, fontSizeOption: value });
+		setComponentState({ ...componentState, fontSizeOption: value });
 	}
 
 	function handleFontColorChanges(value: OptionType) {
-		setState({ ...state, fontColor: value });
+		setComponentState({ ...componentState, fontColor: value });
 	}
 
 	function handleBackgroundChanges(value: OptionType) {
-		setState({ ...state, backgroundColor: value });
+		setComponentState({ ...componentState, backgroundColor: value });
 	}
 
 	function handleWidthChanges(value: OptionType) {
-		setState({ ...state, contentWidth: value });
+		setComponentState({ ...componentState, contentWidth: value });
 	}
 
 	return (
-		<div ref={ref}>
-			<ArrowButton onClick={handleClick} isMenuOpen={isOpen} />
+		<div ref={wrapperRef}>
+			<ArrowButton onClick={onClick} isMenuOpen={isOpen} />
 			<aside className={containerClassName}>
 				<form
 					className={styles.form}
@@ -80,32 +81,37 @@ export const ArticleParamsForm = ({
 						{'Задайте параметры'}
 					</Text>
 					<Select
-						selected={state.fontFamilyOption}
+						selected={componentState.fontFamilyOption}
 						options={fontFamilyOptions}
 						title={'Шрифт'}
-						onChange={handleFontChanges}></Select>
+						onChange={handleFontChanges}
+					/>
 					<RadioGroup
 						name='font-size'
-						selected={state.fontSizeOption}
+						selected={componentState.fontSizeOption}
 						options={fontSizeOptions}
 						title={'Размер шрифта'}
-						onChange={handleSizeChanges}></RadioGroup>
+						onChange={handleSizeChanges}
+					/>
 					<Select
-						selected={state.fontColor}
+						selected={componentState.fontColor}
 						options={fontColors}
 						title={'Цвет шрифта'}
-						onChange={handleFontColorChanges}></Select>
+						onChange={handleFontColorChanges}
+					/>
 					<Separator />
 					<Select
-						selected={state.backgroundColor}
+						selected={componentState.backgroundColor}
 						options={backgroundColors}
 						title={'Цвет фона'}
-						onChange={handleBackgroundChanges}></Select>
+						onChange={handleBackgroundChanges}
+					/>
 					<Select
-						selected={state.contentWidth}
+						selected={componentState.contentWidth}
 						options={contentWidthArr}
 						title={'Ширина контента'}
-						onChange={handleWidthChanges}></Select>
+						onChange={handleWidthChanges}
+					/>
 					<div className={styles.bottomContainer}>
 						<Button title='Сбросить' type='reset' />
 						<Button title='Применить' type='submit' />
