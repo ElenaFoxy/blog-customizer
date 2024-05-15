@@ -5,7 +5,7 @@ import { Select } from 'components/select';
 import { RadioGroup } from 'components/radio-group';
 import { useToggleForm } from './hooks/useToggleForm';
 import { Separator } from '../separator';
-import { useState, useRef, FormEvent } from 'react';
+import { useState, useRef, FormEvent, useReducer } from 'react';
 
 import styles from './ArticleParamsForm.module.scss';
 import {
@@ -29,11 +29,13 @@ export const ArticleParamsForm = ({
 	articleStyles,
 	setArticleStyles,
 }: ArticleParamsFormProps) => {
-	const [isOpen, setIsOpen] = useState(false);
+	//const [isOpen, setIsOpen] = useState(false);
+	const [isOpen, setIsOpen] = useReducer((formState) => {
+		return !formState;
+	}, false);
 	const [componentState, setComponentState] = useState(articleStyles);
 	const wrapperRef = useRef<HTMLDivElement | null>(null);
-	const handleClick = useToggleForm({ isOpen, setIsOpen, wrapperRef });
-	const onClick = () => setIsOpen(!isOpen);
+	useToggleForm({ isOpen, setIsOpen, wrapperRef });
 
 	const handleReset = () => {
 		setComponentState(defaultArticleState);
@@ -49,7 +51,6 @@ export const ArticleParamsForm = ({
 		[styles.container_open]: isOpen,
 	});
 
-	
 	function handleFontChanges(value: OptionType) {
 		setComponentState({ ...componentState, fontFamilyOption: value });
 	}
@@ -72,7 +73,7 @@ export const ArticleParamsForm = ({
 
 	return (
 		<div ref={wrapperRef}>
-			<ArrowButton onClick={onClick} isMenuOpen={isOpen} />
+			<ArrowButton onClick={setIsOpen} isMenuOpen={isOpen} />
 			<aside className={containerClassName}>
 				<form
 					className={styles.form}
@@ -114,8 +115,8 @@ export const ArticleParamsForm = ({
 						onChange={handleWidthChanges}
 					/>
 					<div className={styles.bottomContainer}>
-						<Button title='Сбросить' type='reset' onClick={() => handleReset} />
-						<Button title='Применить' type='submit' onClick={() => handleSubmit}/>
+						<Button title='Сбросить' type='reset' />
+						<Button title='Применить' type='submit' />
 					</div>
 				</form>
 			</aside>

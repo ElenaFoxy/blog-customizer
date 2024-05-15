@@ -12,16 +12,17 @@ export const useToggleForm = ({
 	wrapperRef,
 }: UseToggleForm) => {
 	useEffect(() => {
+		if (!isOpen) return;
 		const handleOutsideClick = (event: MouseEvent) => {
 			const { target } = event;
 			if (target instanceof Node && !wrapperRef.current?.contains(target)) {
 				setIsOpen(false);
 			}
 		};
-		if (isOpen) window.addEventListener('mousedown', handleOutsideClick);
+		window.addEventListener('mousedown', handleOutsideClick);
 
 		return () => {
 			window.removeEventListener('mousedown', handleOutsideClick);
 		};
-	}, [isOpen, setIsOpen, wrapperRef]);
+	}, [isOpen, wrapperRef]);
 };
